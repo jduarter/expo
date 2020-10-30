@@ -78,7 +78,7 @@ jobs:
       - name: Build iOS project for Detox
         run: yarn ios:detox:build:release
         working-directory: apps/bare-expo
-        timeout-minutes: 30
+        timeout-minutes: 45
       - name: Run tests
         run: yarn ios:detox:test:release
         working-directory: apps/bare-expo
