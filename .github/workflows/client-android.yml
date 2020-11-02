@@ -47,11 +47,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn install --frozen-lockfile
-      - run: echo "BUNDLE_BIN=$(pwd)/.direnv/bin" >> $GITHUB_ENV
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - run: echo "$BUNDLE_BIN" >> $GITHUB_PATH
+      - run: echo vendor/bundle/ruby/*/bin >> $GITHUB_PATH
       - run: sudo apt-get install git-crypt
       - name: decrypt secrets if possible
         env:

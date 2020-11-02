@@ -34,11 +34,10 @@ jobs:
       - run: echo "$(pwd)/bin" >> $GITHUB_PATH
       - run: echo "EXPO_ROOT_DIR=$(pwd)" >> $GITHUB_ENV
       - run: expotools ios-generate-dynamic-macros
-      - run: echo "BUNDLE_BIN=$(pwd)/.direnv/bin" >> $GITHUB_ENV
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - run: echo "$BUNDLE_BIN" >> $GITHUB_PATH
+      - run: echo vendor/bundle/ruby/*/bin >> $GITHUB_PATH
       - uses: actions/cache@v1
         with:
           path: ios/Pods

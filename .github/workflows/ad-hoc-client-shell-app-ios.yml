@@ -37,11 +37,10 @@ jobs:
         # Remove GoogleServices-Info because it has been stripped of all our secret keys
         # Will be generated later in the build process if the user provides their own ios.googleServicesFile
         run: expotools ios-generate-dynamic-macros --skip-template=GoogleService-Info.plist
-      - run: echo "BUNDLE_BIN=$(pwd)/.direnv/bin" >> $GITHUB_ENV
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - run: echo "$BUNDLE_BIN" >> $GITHUB_PATH
+      - run: echo vendor/bundle/ruby/*/bin >> $GITHUB_PATH
       - uses: actions/cache@v1
         with:
           path: ios/Pods

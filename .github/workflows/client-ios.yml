@@ -47,11 +47,10 @@ jobs:
           fi
       - run: echo "$(pwd)/bin" >> $GITHUB_PATH
       - run: expotools ios-generate-dynamic-macros
-      - run: echo "BUNDLE_BIN=$(pwd)/.direnv/bin" >> $GITHUB_ENV
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - run: echo "$BUNDLE_BIN" >> $GITHUB_PATH
+      - run: echo vendor/bundle/ruby/*/bin >> $GITHUB_PATH
       - run: expotools client-build --platform ios
         timeout-minutes: 120
         env:
