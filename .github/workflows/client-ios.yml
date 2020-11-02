@@ -50,7 +50,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - run: echo vendor/bundle/ruby/*/bin >> $GITHUB_PATH
       - run: expotools client-build --platform ios
         timeout-minutes: 120
         env:
