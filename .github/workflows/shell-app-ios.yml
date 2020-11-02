@@ -12,6 +12,7 @@ on:
     branches: [ master ]
     paths:
       - .github/workflows/shell-app-ios.yml
+      - .ruby-version
 
 jobs:
   build:
