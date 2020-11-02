@@ -11,24 +11,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
+        if: secrets.GITHUB_TOKEN
         with:
           submodules: true
       - name: Get cache key of git lfs files
+        if: secrets.GITHUB_TOKEN
         id: git-lfs
         run: echo "::set-output name=sha256::$(git lfs ls-files | openssl dgst -sha256)"
       - uses: actions/cache@v2
+        if: secrets.GITHUB_TOKEN
         with:
           path: .git/lfs
           key: ${{ steps.git-lfs.outputs.sha256 }}
       - run: git lfs pull
+        if: secrets.GITHUB_TOKEN
       - uses: actions/setup-node@v1
+        if: secrets.GITHUB_TOKEN
         with:
           node-version: '14.4.0'
       - run: yarn global add expo-cli@3
+        if: secrets.GITHUB_TOKEN
       - name: Cache Node.js modules
+        if: secrets.GITHUB_TOKEN
         uses: actions/cache@v1
         with:
           path: ${{ github.workspace }}/node_modules
@@ -43,6 +49,7 @@ jobs:
       #     expo-cache: true
 
       - run: yarn --frozen-lockfile
+        if: secrets.GITHUB_TOKEN
 
       # - name: Publish Expo app
       #   working-directory: ./apps/native-component-list
@@ -53,10 +60,12 @@ jobs:
       #   run: echo "::set-output name=path::@community/native-component-list?release-channel=pr-${{ github.event.number }}"
       # Build the Expo website
       - name: Build Website
+        if: secrets.GITHUB_TOKEN
         working-directory: ./apps/native-component-list
         run: yarn build:web
       # Deploy Expo web to now
       - name: Publish Website
+        if: secrets.GITHUB_TOKEN
         working-directory: ./apps/native-component-list
         env:
           ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
@@ -64,9 +73,11 @@ jobs:
         run: npx now deploy web-build --env NODE_ENV=production --confirm --public --no-clipboard --token=${ZEIT_TOKEN} > deploy-url.txt
       # Save variable
       - name: Set deploy url to env variable
+        if: secrets.GITHUB_TOKEN
         run: echo "ZEIT_DEPLOY=$(cat deploy-url.txt)" >> $GITHUB_ENV
       # Alias the now deployment URL
       - name: Alias with PR number
+        if: secrets.GITHUB_TOKEN
         working-directory: ./apps/native-component-list
         env:
           ZEIT_TOKEN: ${{ secrets.ZEIT_TOKEN }}
@@ -74,6 +85,7 @@ jobs:
         run: npx now alias --token=${ZEIT_TOKEN} `cat deploy-url.txt` $SITE_ALIAS
       # Send comment to the thread
       - name: Add comment with deploy url
+        if: secrets.GITHUB_TOKEN
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
